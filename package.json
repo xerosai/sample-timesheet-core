@@ -1,0 +1,26 @@
+{
+  "name": "timesheet-core",
+  "version": "1.0.0",
+  "description": "A simple timesheet API (skills test from Vertis)",
+  "main": "timesheet-core.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "NODE_ENV=development nodemon timesheet-core.js",
+    "start-prod": "NODE_ENV=production pm2 start timesheet-core.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/xrscodeworks/timesheet-core.git"
+  },
+  "author": "Simon Neufville <simon@xrscodeworks.com>",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/xrscodeworks/timesheet-core#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "morgan": "^1.9.0",
+    "nodemon": "^1.17.5"
+  }
+}
