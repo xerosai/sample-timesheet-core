@@ -7,6 +7,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const {dbConnect} = require('./db');
+const AppRouter = require('./router');
+
 const app = express();
 
 // Apply middleware
@@ -24,18 +27,17 @@ if (process.env.NODE_ENV !== 'production') {
     app.use(morgan('dev'));
 }
 
-// TODO: Implement Application Router
-app.get('/', (req, res) => {
-    res.json({
-        success: true,
-        message: 'Default route ok'
-    });
-});
+// APPLICATION ROUTER
+AppRouter(app);
+
 
 // SERVER STARTUP
 const PORT = process.env.SERVER_PORT || 8101;
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     console.log(`Started API server on port: ${PORT}`);
     console.log(`API routes have a base URL of: /api/v1`);
+
+    const connectionResult = await dbConnect();
+    console.log(`Successfully connected to database: ${connectionResult.success}`);
 });
