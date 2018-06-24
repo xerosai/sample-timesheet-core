@@ -8,6 +8,7 @@ const _ = require('lodash');
 const moment = require('moment');
 
 const TimesheetEntryModel = require('../models/TimesheetEntry');
+const ClientModel = require('../models/Client');
 const {getClientById} = require('./ClientController');
 const {ControllerHelpers} = require('../helpers');
 const {TIMESHEET_ACTIONS: ACTIONS} = require('../constants').CONTROLLER_ACTIONS;
@@ -74,6 +75,8 @@ module.exports.routeCreateEntry = async (req, res) => {
 
         const bodyData = _.pick(req.body, requiredFields);
 
+        console.log('body data: ', bodyData);
+
         const startDate = parseInt(bodyData.startDate);
         const endDate = parseInt(bodyData.endDate);
 
@@ -81,6 +84,8 @@ module.exports.routeCreateEntry = async (req, res) => {
         bodyData.endDate = moment.unix(parseInt(bodyData.endDate));
 
         const entryData = {...bodyData, clientId: relatedClient.id, userAccountId: req.user.id, overtime: Math.abs(endDate - startDate)};
+
+        console.log(entryData);
 
         const timesheetEntry = await TimesheetEntryModel.create(entryData);
 
@@ -120,7 +125,7 @@ module.exports.routeGetUserEntries = async (req, res) => {
         }
 
         const queryObj = {
-            userAccountId: userAccount.id
+            userAccountId: userAccount.id,
         };
 
         let page = req.query.page ? parseInt(req.query.page) : 0;
@@ -132,7 +137,8 @@ module.exports.routeGetUserEntries = async (req, res) => {
         };
 
         const results = await TimesheetEntryModel.findAll({
-            where: queryObj
+            where: queryObj,
+            include: [ClientModel]
         }, filterObj);
 
         const data = {

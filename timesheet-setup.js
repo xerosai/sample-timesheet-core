@@ -9,6 +9,7 @@ const {dbConnect} = require('./db');
 const {ValidationHelpers} = require('./helpers');
 const ClientModel = require('./models/Client');
 const UserAccountModel = require('./models/UserAccount');
+const TimesheetEntryModel = require('./models/TimesheetEntry');
 
 const USER_DATA = [
     {
@@ -69,6 +70,11 @@ const timesheetSetup = async () => {
         console.log('Connected to database');
 
         console.log('Dropping table contents...');
+
+        await TimesheetEntryModel.destroy({
+            where: {},
+            truncate: false
+        });
 
         await UserAccountModel.destroy({
             where: {},

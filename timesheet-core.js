@@ -6,6 +6,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const {dbConnect} = require('./db');
 const AppRouter = require('./router');
@@ -21,15 +22,18 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+app.use(cors());
+
 if (process.env.NODE_ENV !== 'production') {
     console.log('Loading development modules');
     const morgan = require('morgan');
     app.use(morgan('dev'));
 }
 
+// END OF MIDDLEWARE
+
 // APPLICATION ROUTER
 AppRouter(app);
-
 
 // SERVER STARTUP
 const PORT = process.env.SERVER_PORT || 8101;
